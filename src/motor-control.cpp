@@ -60,9 +60,7 @@ void resetAngle(double angle){
 void resetOdom(double _x, double _y){
   x_pos = _x;
   y_pos = _y;
-  resetChassis();
-  double prev_horizontal_pos_deg = 0, prev_vertical_pos_deg = 0;
-  double delta_local_x_in = 0, delta_local_y_in = 0;
+  
 }
 /*
  * Returns the current rotation of the left chassis motor in degrees.

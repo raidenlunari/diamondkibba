@@ -42,9 +42,9 @@ digital_out matchloader = digital_out(Brain.ThreeWirePort.B);
 digital_out middleGoal = digital_out(Brain.ThreeWirePort.D);
 digital_out leftWing = digital_out(Brain.ThreeWirePort.A);
 distance backDistanceSensor = distance(PORT8);
-distance frontDistanceSensor = distance(PORT1);
-distance leftDistanceSensor = distance(PORT7);
-distance rightDistanceSensor = distance(PORT4);
+distance frontDistanceSensor = distance(PORT15);
+distance leftDistanceSensor = distance(PORT17);
+distance rightDistanceSensor = distance(PORT13);
 optical ballSensTop = optical(12);
 // ============================================================================
 // USER-CONFIGURABLE PARAMETERS (CHANGE BEFORE USING THIS TEMPLATE)

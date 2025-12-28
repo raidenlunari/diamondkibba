@@ -29,89 +29,103 @@ min_output = 100;
   storeIntake();
   matchloader.set(true);
  //matchload 1
- moveToPoint(0,17, 1, 2000, true, 10);
+ moveToPoint(0,16, 1, 2000, true, 10);
  turnToAngle(90, 1000, true, 8);
- moveToPoint(23,28.5,1, 1000,true,5);
+ y_pos = 46-(leftDistanceSensor.value()/25.4);
+ moveToPoint(23,28,1, 1000,true,5);
+ driveChassis(5,5);
  vex::wait(200,msec);
- moveToPoint(-8,28.5,-1,2000,true,10);
+ resetOdom(28-frontDistanceSensor.value()/25.4, 46-(leftDistanceSensor.value()/25.4));
+
+ moveToPoint(-8,27,-1,2000,true,10);
  scoreLongGoal();
  matchloader.set(false);
- moveToPoint(-20,28.5,-1,400,true,6);
+ moveToPoint(-20,27,-1,400,true,5);
  driveChassis(-5,-5);
- vex::wait(500,msec);
+ vex::wait(600,msec);
  stopChassis();
- vex::wait(500,msec);
- resetOdom(-13,28);
- resetAngle(90);
+ vex::wait(50,msec);
+ x_pos = -13;
+ y_pos = 28;
 
- //stack 
- curveCircle(150,2,1100,true,6);
+
+ //turn 
  storeIntake();
- turnToAngle(180,400,false,8);
+ turnToAngle(175,1000,false,6);
+ stopChassis();
+ vex::wait(50,msec);
+ x_pos = 34 - leftDistanceSensor.value()/25.4; 
+ vex::wait(50,msec);
 
- 
  vex::task matchloadDeploy([]{
-  vex::wait(100, msec);
+  vex::wait(200, msec);
   matchloader.set(true);
   return 0;
 });
 vex::task matchloadRetract([]{
-  vex::wait(350, msec);
+  vex::wait(450, msec);
   matchloader.set(false);
   return 0;
 });  
 
-moveToPoint(-6,-6,1,3000,true,7);
+//stack
+moveToPoint(-5.25,-2,1,3000,true,5);
 
 
-
+vex::wait(50,msec);
  vex::task matchloadDeploy1([]{
-  vex::wait(600, msec);
+  vex::wait(700, msec);
   matchloader.set(true);
   return 0;
 });
 
  //stack 2
-moveToPoint(-5,-33,1,2000,true,8);
-moveToPoint(-5,-37,1,2000,true,6);
+moveToPoint(-4,-34,1,2000,true,8);
+moveToPoint(-4,-43,1,3000,true,5);
+outtake();
+moveToPoint(-3.5,-48,1,1400,true,3);
+stopIntake();
 vex::task midgoaldown([]{
-  vex::wait(1500, msec);
+  vex::wait(1100, msec);
   middleGoal.set(true);
   return 0;
  });
-turnToAngle(120,800,true,8);
-moveToPoint(-11,-26,-1, 1500, true, 7);
-swing(135,1,400,true,7);
-//middle
-outtake();
-vex::wait(25,msec);
-stopIntake();
-vex::wait(50, msec);
+moveToPoint(-12,-30.5,-1, 1500, true, 7);
+
 scoreMiddleGoal();
-driveTo(-10,1000,true,3);
+//middle
+moveToPoint(-14,-28.5,-1, 1500, true, 5);
+driveChassis(-3,-3);
+task::sleep(1600);
 outtake();
 vex::wait(50,msec);
 vex::task midgoalup([]{
-  vex::wait(200, msec);
+  vex::wait(250, msec);
   middleGoal.set(false);
   return 0;
  }); 
-storeIntake();
+ stopIntake();
 
 //matchload 2
-moveToPoint(20,-49.5,1, 1500, true, 8);
+moveToPoint(18,-51.5,1, 1500, true, 8);
+storeIntake();
 turnToAngle(90,1000,true,7);
-moveToPoint(35,-49.5,1, 800, true, 5);
-vex::wait(400,msec);
-moveToPoint(2,-50, -1, 1500, true, 10);
+//x_pos = _____ (frontDistanceSensor.value()/25.4); ////////////////////////////////////////////////////////////////
+y_pos = -33-(rightDistanceSensor.value()/25.4);
+moveToPoint(40,-52.5,1, 800, true, 5);
+driveChassis(5,5);
+task::sleep(300);
+moveToPoint(-4,-53.5, -1, 1500, true, 10);
 scoreLongGoal();
-moveToPoint(-18,-50 ,-1, 300, false, 6);
+moveToPoint(-18,-53.5,-1, 300, false, 6);
 driveTo(-10,2000,true,6);
 vex::wait(20000,msec);
 
 }
 
-void rightwing4(){
+
+
+void rightwing4matchload(){
   min_output = 100;
   vex::task antiJamF([]{
     while(1){
@@ -124,76 +138,42 @@ void rightwing4(){
   middleGoal.set(false);
   leftWing.set(true);
   storeIntake();
-  correct_angle = 45;
-  vex::task matchloadDeploy([]{
-    vex::wait(450, msec);
-    matchloader.set(true);
-    return 0;
-  });
-  vex::task matchloadDeploy1([]{
-    vex::wait(1500, msec);
-    matchloader.set(false);
-    return 0;
-  });
-  moveToPoint(6, 30, 1, 2000, true, 8);
-  moveToPoint(14, 16, -1, 1000, true, 8);
-  moveToPoint(27, 4, -1, 1000, true, 8);
-  turnToAngle(180, 2000, true, 8);
-  moveToPoint(37, 28, -1, 800, true, 8);
-  scoreLongGoal();
-  matchloader.set(false);
-  task::sleep(1000);
-  storeIntake();
-  driveTo(3,1000,true,8);
-  turnToAngle(240,1200,true,8);
-  leftWing.set(false);
-  driveTo(-8,1500,true,8);
-  turnToAngle(-180,2000,true,8);
-  driveTo(-10,2000,false,6);
-  turnToAngle(230,2000,true,6);
-  vex::wait(100000,msec);
-  driveTo(1,2000,true,1);
-  stopChassis(brakeType::hold);
-
-}
-
-void rightwing4matchload(){
-min_output = 100;
-  vex::task antiJamF([]{
-    while(1){
-      antiJamTask();
-      vex::wait(20, msec);
-    }
-    return 0;
-  });
-  outtake();
-  middleGoal.set(false);
-  leftWing.set(true);
-  storeIntake();
- matchloader.set(true);
+  matchloader.set(true);
  //matchload 1
- moveToPoint(0,18.5, 1, 2000, true, 10);
+ moveToPoint(0,16.5, 1, 2000, true, 10);
  turnToAngle(90, 1000, true, 8);
- moveToPoint(23,30,1, 1000,true,5);
- vex::wait(150,msec);
- moveToPoint(-8,29,-1,2000,true,8);
- matchloader.set(false);
+ y_pos = 46-(leftDistanceSensor.value()/25.4);
+ moveToPoint(23,27.25,1, 1000,true,5);
+ driveChassis(5,5);
+ vex::wait(50,msec);
+ stopChassis();
+ vex::wait(10,msec);
+ driveChassis(5,5);
+ vex::wait(140,msec);
+ resetOdom(28-frontDistanceSensor.value()/25.4, 47-(leftDistanceSensor.value()/25.4));
+
+ moveToPoint(-8,28,-1,2000,true,10);
  scoreLongGoal();
- moveToPoint(-20,29,-1,600,true,6);
  matchloader.set(false);
- task::sleep(700);
- storeIntake();
+ moveToPoint(-20,28,-1,400,true,6);
+ driveChassis(-5,-5);
+ vex::wait(600,msec);
+ stopChassis();
+ vex::wait(50,msec);
+ x_pos = -13;
+ y_pos = 28;
+
  //wing
- resetOdom(0,0);
- resetAngle(90);
-  curveCircle(350,-13,5000,true,6);
-  leftWing.set(false);
-  turnToAngle(90,2000,true,8);
-  driveTo(-26,2000,false,5);
-  turnToAngle(110,2000,true,6);
-  vex::wait(100000,msec);
-  driveTo(1,2000,true,1);
-  stopChassis(brakeType::hold);
+turnToAngle(30,800,true,8);
+leftWing.set(false);
+driveTo(3,800,true,5);
+turnToAngle(85,800,true,6);
+matchloader.set(false);
+driveTo(-20,1500,true,4);
+turnToAngle(110,2000,true,4);
+stopChassis(brakeType::hold);
+vex::wait(20000,msec);
+
 
 
  
@@ -235,111 +215,17 @@ void rightwing7(){
   matchloader.set(false);
   task::sleep(900);
   storeIntake();
-  driveTo(5,600,true,8);
-  turnToAngle(210,1200,true,8);
-  leftWing.set(false);
-  driveTo(-15,1500,true,8);
-  turnToAngle(-190,2000,true,8);
-  driveTo(-10,2000,false,6);
-  turnToAngle(230,2000,true,6);
-  vex::wait(100000,msec);
-  driveTo(1,2000,true,1);
-  stopChassis(brakeType::hold);
 
-}
-void leftmidseven(){
-  min_output = 100;
-  vex::task antiJamF([]{
-    while(1){
-      antiJamTask();
-      vex::wait(20, msec);
-    }
-    return 0;
-  });
-  outtake();
-  middleGoal.set(false);
-  leftWing.set(true);
-  storeIntake();
-  correct_angle = -45;
-  vex::task matchloadDeploy([]{
-    vex::wait(550, msec);
-    matchloader.set(true);
-    return 0;
-  });
-  vex::task matchloadDeploy1([]{
-    vex::wait(2000, msec);
-    matchloader.set(false);
-    return 0;
-  });
-  moveToPoint(-6.5, 33, 1, 2000, true, 8);
-  matchloader.set(false);
-  turnToAngle(-50,2000,true,6);
-  moveToPoint(2,31,-1,2000,true,5);
-  turnToAngle(-135, 2000,true,6);
-  moveToPoint(9.5,36.5,-1,2000,true,5);
-  middleGoal.set(true);
-  vex::task middlegoalup([]{
-    vex::wait(1800, msec);
-    middleGoal.set(false);
-    return 0;
-  });
-  scoreMiddleGoal();
-  task::sleep(1800);
-  moveToPoint(-19, 6, 1, 2000, true, 6);
-  storeIntake();
-  matchloader.set(true);
-  turnToAngle(180,1800,true,4);
-  moveToPoint(-20, -14, 1, 1400, true, 4);
-  vex::wait(100,msec);
-  moveToPoint(-21,28,-1,1500,false,7);
-  scoreLongGoal();
-  vex::wait(20000, msec);
-
-}
-
-void leftwingauto(){
-  min_output = 100;
-  vex::task antiJamF([]{
-    while(1){
-      antiJamTask();
-      vex::wait(20, msec);
-    }
-    return 0;
-  });
-  outtake();
-  middleGoal.set(false);
-  leftWing.set(true);
-  storeIntake();
-  correct_angle = -45;
-  vex::task matchloadDeploy([]{
-    vex::wait(450, msec);
-    matchloader.set(true);
-    return 0;
-  });
-  vex::task matchloadDeploy1([]{
-    vex::wait(900, msec);
-    matchloader.set(false);
-    return 0;
-  });
-  moveToPoint(-7, 33, 1, 2000, true, 8);
-  turnToAngle(-30,400,true,8);
-  moveToPoint(-19, 20, -1, 1000, true, 8);
-  moveToPoint(-27.5, 15, -1, 1000, true, 8);
-  turnToAngle(-180, 600, true, 8);
-  moveToPoint(-21, 28, -1, 6000, true, 8);
-  scoreLongGoal();
-  task::sleep(1200);
-  storeIntake();
-  driveTo(4,800,true,7);
-  turnToAngle(-125,800,true,8);
-  leftWing.set(false);
-  driveTo(-13,2000,true,8);
-  turnToAngle(165,2000,true,8);
-  driveTo(-13,3000,false,8);
-  vex::wait(100,msec);
-  turnToAngle(-150,2000,true,8);
-  vex::wait(100000,msec);
-  driveTo(1,2000,true,1);
+ //wing
+turnToAngle(30,800,true,8);
+leftWing.set(false);
+driveTo(3,800,true,5);
+turnToAngle(85,800,true,6);
+matchloader.set(false);
+driveTo(-20,1500,true,4);
+turnToAngle(110,2000,true,4);
+stopChassis(brakeType::hold);
+vex::wait(20000,msec);
 
 }
 
@@ -398,6 +284,391 @@ void rightlowquals(){
   */
 }
 
+void rightlowwing(){
+
+  min_output = 100;
+  vex::task antiJamF([]{
+    while(1){
+      antiJamTask();
+      vex::wait(20, msec);
+    }
+    return 0;
+  });
+  outtake();
+  middleGoal.set(false);
+  leftWing.set(true);
+  storeIntake();
+  matchloader.set(true);
+ //matchload 1
+ moveToPoint(0,15.5, 1, 2000, true, 10);
+ turnToAngle(-90, 800, true, 8);
+ driveChassis(4,4);
+ task::sleep(1100);
+ y_pos = 35-(rightDistanceSensor.value()/25.4);
+ moveToPoint(19,16.5,-1,2000,true,10);
+ scoreLongGoal();
+ matchloader.set(false);
+ moveToPoint(22,16.5,-1,400,true,5);
+ driveChassis(-8,-8);
+ vex::wait(700,msec);
+ stopChassis();
+ x_pos = 20;
+ y_pos = 17;
+ vex::wait(400,msec);
+
+ //stack 
+ storeIntake();
+ turnToAngle(-180,1000,false,6);
+ stopChassis();
+ vex::wait(50,msec);
+ x_pos = 66 - rightDistanceSensor.value()/25.4; 
+ vex::wait(50,msec);
+
+ 
+ vex::task matchloadDeploy([]{
+  vex::wait(200, msec);
+  matchloader.set(true);
+  return 0;
+});
+vex::task matchloadRetract([]{
+  vex::wait(450, msec);
+  matchloader.set(false);
+  return 0;
+});  
+//stack
+moveToPoint(22.5,0,1,3000,true,5);
+vex::wait(100,msec);
+turnToAngle(65,800,true,7);
+
+vex::wait(50,msec);
+ vex::task matchloadDeploy1([]{
+  vex::wait(1000, msec);
+  matchloader.set(true);
+  return 0;
+});
+vex::task matchloadRetract1([]{
+  vex::wait(1300, msec);
+  matchloader.set(false);
+  return 0;
+});  
+ //stack 2
+moveToPoint(24.75,15,1,2000,true,7);
+vex::wait(10,msec);
+moveToPoint(29.5,25,1,2000,true,3);
+vex::wait(100,msec);
+moveToPoint(16,7,-1,2000,true,8);
+turnToAngle(-45,600,true,8);
+vex::wait(50,msec);
+ vex::task midgoaldown([]{
+  vex::wait(600, msec);
+  middleGoal.set(true);
+  return 0;
+});
+driveChassis(-3,-3);
+scoreMiddleGoal();
+vex::wait(2000,msec);
+leftWing.set(false);
+moveToPoint(8,8,1,2000,true,6);
+middleGoal.set(false);
+turnToAngle(-95,800,true,6);
+driveTo(-20,2000,true,5);
+turnToAngle(-70,2000,true,4);
+stopChassis(brakeType::hold);
+vex::wait(20000,msec);
+
+
+}
+
+void leftwing4matchload(){
+  min_output = 100;
+  vex::task antiJamF([]{
+    while(1){
+      antiJamTask();
+      vex::wait(20, msec);
+    }
+    return 0;
+  });
+  outtake();
+  middleGoal.set(false);
+  leftWing.set(true);
+  storeIntake();
+  matchloader.set(true);
+ //matchload 1
+ moveToPoint(0,15, 1, 2000, true, 10);
+ turnToAngle(-90, 800, true, 8);
+ driveChassis(5,5);
+ task::sleep(1100);
+ y_pos = 34-(rightDistanceSensor.value()/25.4);
+ moveToPoint(16,15,-1,2000,true,10);
+ scoreLongGoal();
+ matchloader.set(false);
+ moveToPoint(20,15,-1,400,true,5);
+ driveChassis(-8,-8);
+ vex::wait(400,msec);
+ stopChassis();
+ vex::wait(400,msec);
+ //wing
+
+ turnToAngle(-150,800,true,8);
+ leftWing.set(false);
+ driveTo(2.5,800,true,5);
+ turnToAngle(-93,800,true,6);
+ matchloader.set(false);
+ driveTo(-20,1500,true,4);
+ turnToAngle(-70,2000,true,4);
+ stopChassis(brakeType::hold);
+ vex::wait(20000,msec);
+}
+
+void left45wing(){
+
+  min_output = 100;
+  vex::task antiJamF([]{
+    while(1){
+      antiJamTask();
+      vex::wait(20, msec);
+    }
+    return 0;
+  });
+  outtake();
+  middleGoal.set(false);
+  leftWing.set(true);
+  storeIntake();
+  matchloader.set(true);
+ //matchload 1
+ moveToPoint(0,15.5, 1, 2000, true, 10);
+ turnToAngle(-90, 800, true, 8);
+ driveChassis(4,4);
+ task::sleep(1100);
+ y_pos = 35-(rightDistanceSensor.value()/25.4);
+ moveToPoint(19,16.5,-1,2000,true,10);
+ scoreLongGoal();
+ matchloader.set(false);
+ moveToPoint(22,16.5,-1,400,true,5);
+ driveChassis(-8,-8);
+ vex::wait(700,msec);
+ stopChassis();
+ x_pos = 20;
+ y_pos = 17;
+ vex::wait(400,msec);
+
+ //stack 
+ storeIntake();
+ turnToAngle(-180,1000,false,6);
+ stopChassis();
+ vex::wait(50,msec);
+ x_pos = 66 - rightDistanceSensor.value()/25.4; 
+ vex::wait(50,msec);
+
+ 
+ vex::task matchloadDeploy([]{
+  vex::wait(200, msec);
+  matchloader.set(true);
+  return 0;
+});
+vex::task matchloadRetract([]{
+  vex::wait(450, msec);
+  matchloader.set(false);
+  return 0;
+});  
+//stack
+moveToPoint(22.5,0,1,3000,true,5);
+vex::wait(100,msec);
+turnToAngle(65,800,true,7);
+
+vex::wait(50,msec);
+ vex::task matchloadDeploy1([]{
+  vex::wait(1000, msec);
+  matchloader.set(true);
+  return 0;
+});
+vex::task matchloadRetract1([]{
+  vex::wait(1300, msec);
+  matchloader.set(false);
+  return 0;
+});  
+ //stack 2
+moveToPoint(24.75,15,1,2000,true,7);
+vex::wait(10,msec);
+moveToPoint(29.5,25,1,2000,true,3);
+vex::wait(100,msec);
+moveToPoint(16,7,-1,2000,true,8);
+turnToAngle(-45,600,true,8);
+vex::wait(50,msec);
+ vex::task midgoaldown([]{
+  vex::wait(600, msec);
+  middleGoal.set(true);
+  return 0;
+});
+driveChassis(-3,-3);
+scoreMiddleGoal();
+vex::wait(2000,msec);
+leftWing.set(false);
+moveToPoint(8,8,1,2000,true,6);
+middleGoal.set(false);
+turnToAngle(-95,800,true,6);
+driveTo(-20,2000,true,5);
+turnToAngle(-70,2000,true,4);
+stopChassis(brakeType::hold);
+vex::wait(20000,msec);
+
+
+}
+
+void leftwing7(){
+  min_output = 100;
+  vex::task antiJamF([]{
+    while(1){
+      antiJamTask();
+      vex::wait(20, msec);
+    }
+    return 0;
+  });
+  outtake();
+  middleGoal.set(false);
+  leftWing.set(true);
+  storeIntake();
+  correct_angle = -45;
+  vex::task matchloadDeploy([]{
+    vex::wait(450, msec);
+    matchloader.set(true);
+    return 0;
+  });
+  vex::task matchloadDeploy1([]{
+    vex::wait(1500, msec);
+    return 0;
+  });
+  moveToPoint(-6, 30, 1, 2000, true, 8);
+  moveToPoint(-14, 20, -1, 800, true, 8);
+  moveToPoint(-23.5, 8, -1, 800, true, 8);
+  turnToAngle(180, 1000, true, 8);
+  x_pos = -6-(rightDistanceSensor.value()/25.4);
+  moveToPoint(-23.5, -10, 1, 1200, true, 5);
+  stopChassis();
+  vex::wait(10,msec);
+  driveChassis(4,4);
+  vex::wait(100,msec);
+  x_pos = -6-(rightDistanceSensor.value()/25.4);
+  vex::wait(50,msec);
+  moveToPoint(-26.5, 20, -1, 2000, true, 10);
+  scoreLongGoal();
+  moveToPoint(-26.5, 24, -1, 600, true, 5);
+  matchloader.set(false);
+  driveChassis(-8,-8);
+  task::sleep(2500);
+  storeIntake();
+
+ //wing
+turnToAngle(120,800,true,8);
+leftWing.set(false);
+driveTo(3,800,true,5);
+turnToAngle(175,800,true,6);
+matchloader.set(false);
+driveTo(-20,1500,true,4);
+turnToAngle(190,2000,true,4);
+stopChassis(brakeType::hold);
+vex::wait(20000,msec);
+
+}
+
+void leftmidseven(){
+  min_output = 100;
+  vex::task antiJamF([]{
+    while(1){
+      antiJamTask();
+      vex::wait(20, msec);
+    }
+    return 0;
+  });
+  outtake();
+  middleGoal.set(false);
+  leftWing.set(true);
+  storeIntake();
+  correct_angle = -45;
+  vex::task matchloadDeploy([]{
+    vex::wait(550, msec);
+    matchloader.set(true);
+    return 0;
+  });
+  vex::task matchloadDeploy1([]{
+    vex::wait(2000, msec);
+    matchloader.set(false);
+    return 0;
+  });
+  moveToPoint(-6.5, 33, 1, 2000, true, 8);
+  matchloader.set(false);
+  turnToAngle(-50,2000,true,6);
+  moveToPoint(2,31,-1,2000,true,5);
+  turnToAngle(-135, 2000,true,6);
+  moveToPoint(9.5,36.5,-1,2000,true,5);
+  middleGoal.set(true);
+  vex::task middlegoalup([]{
+    vex::wait(1800, msec);
+    middleGoal.set(false);
+    return 0;
+  });
+  scoreMiddleGoal();
+  task::sleep(1800);
+  moveToPoint(-19, 6, 1, 2000, true, 6);
+  storeIntake();
+  matchloader.set(true);
+  turnToAngle(180,1800,true,4);
+  moveToPoint(-20, -14, 1, 1400, true, 4);
+  vex::wait(100,msec);
+  moveToPoint(-21,28,-1,1500,false,7);
+  scoreLongGoal();
+  vex::wait(20000, msec);
+
+}
+
+
+void leftwingauto(){
+  min_output = 100;
+  vex::task antiJamF([]{
+    while(1){
+      antiJamTask();
+      vex::wait(20, msec);
+    }
+    return 0;
+  });
+  outtake();
+  middleGoal.set(false);
+  leftWing.set(true);
+  storeIntake();
+  correct_angle = -45;
+  vex::task matchloadDeploy([]{
+    vex::wait(450, msec);
+    matchloader.set(true);
+    return 0;
+  });
+  vex::task matchloadDeploy1([]{
+    vex::wait(900, msec);
+    matchloader.set(false);
+    return 0;
+  });
+  moveToPoint(-7, 33, 1, 2000, true, 8);
+  turnToAngle(-30,400,true,8);
+  moveToPoint(-19, 20, -1, 1000, true, 8);
+  moveToPoint(-27.5, 15, -1, 1000, true, 8);
+  turnToAngle(-180, 600, true, 8);
+  moveToPoint(-21, 28, -1, 6000, true, 8);
+  scoreLongGoal();
+  task::sleep(1200);
+  storeIntake();
+  driveTo(4,800,true,7);
+  turnToAngle(-125,800,true,8);
+  leftWing.set(false);
+  driveTo(-13,2000,true,8);
+  turnToAngle(165,2000,true,8);
+  driveTo(-13,3000,false,8);
+  vex::wait(100,msec);
+  turnToAngle(-150,2000,true,8);
+  vex::wait(100000,msec);
+  driveTo(1,2000,true,1);
+}
+
+
+
 void leftmidelims(){
   min_output = 100;
   vex::task antiJamF([]{
@@ -438,82 +709,6 @@ driveTo(1,2000,true,1);
 
 }
 
-void left54(){
-  min_output = 100;
-  vex::task antiJamF([]{
-    while(1){
-      antiJamTask();
-      vex::wait(20, msec);
-    }
-    return 0;
-  });
-  outtake();
-  middleGoal.set(false);
-  leftWing.set(true);
-  storeIntake();
-  correct_angle = -45;
-  vex::task matchloadDeploy([]{
-    vex::wait(500, msec);
-    matchloader.set(true);
-    return 0;
-  });
-  moveToPoint(-5.5, 26, 1, 2000, true, 8);
-  matchloader.set(false);
-  vex::task matchloadDeploy1([]{
-    vex::wait(1200, msec);
-    matchloader.set(true);
-    return 0;
-  });
-  vex::task matchloadretract([]{
-    vex::wait(1400, msec);
-    matchloader.set(false);
-    return 0;
-  });
-  moveToPoint(-20,34.5,1,1000,true,4);
-  driveTo(5,2000,true,4);
-  vex::wait(3000,msec);
-  moveToPoint(-3,25,-1,2000,true,7);
-  turnToAngle(225,2000,true,7);
-  driveTo(-12,2000,true,7);
-  outtake();
-  vex::wait(150, msec);
-  stopIntake();
-  middleGoal.set(true);
-  scoreMiddleGoal();
-  driveTo(1,200,true,2);
-  vex::wait(1500,msec);
-  moveToPoint(-20,5,1,2000,true,7);
-  middleGoal.set(false);
-  vex::task matchloadDeploy2([]{
-    vex::wait(300, msec);
-    matchloader.set(true);
-    return 0;
-  });
-  vex::task matchloadDeploy3([]{
-    vex::wait(3000, msec);
-    matchloader.set(false);
-    return 0;
-  });
-  turnToAngle(-180,2000,true,7);
-  moveToPoint(-22,-10,1,800,true,5);
-  vex::wait(300,msec);
-  moveToPoint(-20,15,-1,2000,true,8);
-  moveToPoint(-120,118,-1,2000,true,6);
-  scoreLongGoal();
-  vex::wait(600,msec);
-  driveTo(4,800,true,7);
-  turnToAngle(-125,800,true,8);
-  leftWing.set(false);
-  driveTo(-13,2000,true,8);
-  turnToAngle(165,2000,true,8);
-  driveTo(-13,3000,false,8);
-  vex::wait(100,msec);
-  turnToAngle(-150,2000,true,8);
-  vex::wait(100000,msec);
-  driveTo(1,2000,true,1);
-
-
-}
 
 void skills(){
 min_output = 100;
@@ -648,6 +843,55 @@ min_output = 100;
 
 }
 
+
+
+
+
+void rightwing4(){
+  min_output = 100;
+  vex::task antiJamF([]{
+    while(1){
+      antiJamTask();
+      vex::wait(20, msec);
+    }
+    return 0;
+  });
+  outtake();
+  middleGoal.set(false);
+  leftWing.set(true);
+  storeIntake();
+  correct_angle = 45;
+  vex::task matchloadDeploy([]{
+    vex::wait(450, msec);
+    matchloader.set(true);
+    return 0;
+  });
+  vex::task matchloadDeploy1([]{
+    vex::wait(1500, msec);
+    matchloader.set(false);
+    return 0;
+  });
+  moveToPoint(6, 30, 1, 2000, true, 8);
+  moveToPoint(14, 16, -1, 1000, true, 8);
+  moveToPoint(27, 4, -1, 1000, true, 8);
+  turnToAngle(180, 2000, true, 8);
+  moveToPoint(37, 28, -1, 800, true, 8);
+  scoreLongGoal();
+  matchloader.set(false);
+  task::sleep(1000);
+  storeIntake();
+  driveTo(3,1000,true,8);
+  turnToAngle(240,1200,true,8);
+  leftWing.set(false);
+  driveTo(-8,1500,true,8);
+  turnToAngle(-180,2000,true,8);
+  driveTo(-10,2000,false,6);
+  turnToAngle(230,2000,true,6);
+  vex::wait(100000,msec);
+  driveTo(1,2000,true,1);
+  stopChassis(brakeType::hold);
+
+}
 
 void awp2(){
 min_output = 100;

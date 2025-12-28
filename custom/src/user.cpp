@@ -4,7 +4,7 @@
 #include "../custom/include/intake.h"
 #include "../custom/include/logger.h"
 // Modify autonomous, driver, or pre-auton code below
-int auton_selected = 0;
+int auton_selected = 7;
 bool auto_started = false;
 
 void runAutonomous() {
@@ -18,25 +18,26 @@ void runAutonomous() {
       rightwing4matchload();
       break;  
     case 2:
-      leftmidseven();
+      rightwing7();
       break;
     case 3:
-      leftwingauto();
+      rightlowquals();
       break; 
     case 4:
-      rightlowquals();
+      rightlowwing();
       break;
     case 5:
-      leftmidelims();
+      leftwing4matchload();
       break;
     case 6:
-      skills();
+      left45wing();
     case 7:
-      rightwing7();
+      leftwing7();
     case 8:
-      left54();
+      leftmidseven();
     case 9:
-      rightwing7();
+      skills();
+      
 
     
   }
